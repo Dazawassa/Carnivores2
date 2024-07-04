@@ -748,7 +748,7 @@ HRESULT CreateDirect3D(HWND hwnd)
 	hRes = lpDD->SetCooperativeLevel(hwnd, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
 	if (FAILED(hRes)) DoHalt("Error setting cooperative level\n");
 
-	hRes = lpDD->SetDisplayMode(WinW, WinH, 16);
+	hRes = lpDD->SetDisplayMode(1920, 1080, 32);
 	if (FAILED(hRes)) {
 		PrintLog("DDraw: can't set selected video mode\n");
 		WinW = 640;
@@ -801,8 +801,8 @@ HRESULT CreateDevice(DWORD dwWidth, DWORD dwHeight)
 	ZeroMemory(&ddsd, sizeof(ddsd));
 	ddsd.dwSize = sizeof(ddsd);
 	ddsd.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT;
-	ddsd.dwWidth = dwWidth;
-	ddsd.dwHeight = dwHeight;
+	ddsd.dwWidth = 1920;
+	ddsd.dwHeight = 1080;
 	ddsd.ddsCaps.dwCaps = DDSCAPS_3DDEVICE | DDSCAPS_OFFSCREENPLAIN | DDSCAPS_VIDEOMEMORY;
 	hRes = lpDD->CreateSurface(&ddsd, &lpddBack, NULL);
 	if (FAILED(hRes)) DoHalt("Error creating back buffer surface\n");
@@ -816,8 +816,8 @@ HRESULT CreateDevice(DWORD dwWidth, DWORD dwHeight)
 		ddsd.dwSize = sizeof(ddsd);
 		ddsd.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT | DDSD_ZBUFFERBITDEPTH;
 		ddsd.ddsCaps.dwCaps = DDSCAPS_ZBUFFER | DDSCAPS_VIDEOMEMORY;
-		ddsd.dwWidth = dwWidth;
-		ddsd.dwHeight = dwHeight;
+		ddsd.dwWidth = 1920;
+		ddsd.dwHeight = 1080;
 		ddsd.dwZBufferBitDepth = 16;//dwZBufferBitDepth;
 		hRes = lpDD->CreateSurface(&ddsd, &lpddZBuffer, NULL);
 		/*
@@ -966,7 +966,7 @@ void d3dDetectCaps()
 	for (int t = 0; t < d3dmemmapsize; t++) {
 		if (!d3dAllocTexture(t, 256, 256)) break;
 	}
-	
+
 	{
 		int t = d3dmemmapsize;
 		d3dTexturesMem = t * 256 * 256 * 2;
@@ -976,14 +976,17 @@ void d3dDetectCaps()
 	d3dDownLoadTexture(0, 256, 256, SkyPic);
 	DWORD T;
 	T = timeGetTime();
-	for (int t = 0; t < 10; t++) d3dDownLoadTexture(0, 256, 256, SkyPic);
+	for (int t = 0; t < 10; t++)
+	{
+		d3dDownLoadTexture(0, 256, 256, SkyPic);
+	}
 	T = timeGetTime() - T;
 
 	wsprintfA(logt, "DETECTED: Texture memory : %dK.\n", d3dTexturesMem >> 10);
 	PrintLog(logt);
 	ResetTextureMap();
 
-	wsprintfA(logt, "DETECTED: Texture transfer speed: %dK/sec.\n", 128 * 10000 / T);
+	//wsprintfA(logt, "DETECTED: Texture transfer speed: %dK/sec.\n", 128 * 10000 / T);
 	PrintLog(logt);
 
 

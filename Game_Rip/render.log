@@ -1,0 +1,13 @@
+ Build v2.04. Sep.24 1999.
+Creating main window...Ok.
+
+==Init Direct Draw==
+DirectDrawCreate: Ok
+Direct Draw activated.
+
+===> Error loading trophy!
+Init Engine: Ok.
+== Loading resources ==
+Loading common resources: Done.
+ABNORMAL_HALT: Error opening resource file
+.rsc.

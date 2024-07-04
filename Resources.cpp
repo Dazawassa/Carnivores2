@@ -1603,10 +1603,10 @@ void LoadCharacterInfo(TCharacterInfo& chinfo, char* FName)
 	//============= read sound fx ==============//
 	BYTE tmp[32];
 	for (int s = 0; s < chinfo.SfxCount; s++) {
-		ReadFile(hfile, tmp, 32, &l, NULL);
-		ReadFile(hfile, &chinfo.SoundFX[s].length, 4, &l, NULL);
-		chinfo.SoundFX[s].lpData = (short int*)_HeapAlloc(Heap, 0, chinfo.SoundFX[s].length);
-		ReadFile(hfile, chinfo.SoundFX[s].lpData, chinfo.SoundFX[s].length, &l, NULL);
+		//ReadFile(hfile, tmp, 32, &l, NULL);
+		//ReadFile(hfile, &chinfo.SoundFX[s].length, 4, &l, NULL);
+		//chinfo.SoundFX[s].lpData = (short int*)_HeapAlloc(Heap, 0, chinfo.SoundFX[s].length);
+		//ReadFile(hfile, chinfo.SoundFX[s].lpData, chinfo.SoundFX[s].length, &l, NULL);
 	}
 
 	for (int v = 0; v < chinfo.mptr->VCount; v++) {

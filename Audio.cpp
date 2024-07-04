@@ -41,166 +41,167 @@ void Init_SetCooperative()
 
 int InitDirectSound(HWND hwnd)
 {
-	PrintLog("\n");
-	PrintLog("==Init Direct Sound==\n");
-
-	HRESULT hres;
-	iTotalSoundDevices = 0;
-
-	lpSoundBuffer = (char*)_SoundBufferData;
-	if (!lpSoundBuffer)
-		return 0;
-	PrintLog("Back Sound Buffer created.\n");
-
-	for (int i = 0; i < MAX_SOUND_DEVICE; i++)
-		sdd[i].DSC.dwSize = sizeof(DSCAPS);
-
-
-	hres = DirectSoundEnumerate((LPDSENUMCALLBACK)EnumerateSoundDevice, NULL);
-	if (hres != DS_OK) {
-		wsprintfA(logtt, "DirectSoundEnumerate Error: %Xh\n", hres);
-		PrintLog(logtt);
-		return 0;
-	}
-	PrintLog("DirectSoundEnumerate: Ok\n");
-
-
-	iTotal16SD = 0;
-	for (int i = 0; i < iTotalSoundDevices; i++) {
-		LPDIRECTSOUND lpds;
-		if (DirectSoundCreate(&sdd[i].Guid, &lpds, NULL) != DS_OK) continue;
-
-		if (lpds->GetCaps(&sdd[i].DSC) != DS_OK) continue;
-
-		if (sdd[i].DSC.dwFlags & (DSCAPS_PRIMARY16BIT | DSCAPS_PRIMARYSTEREO | DSCAPS_SECONDARY16BIT | DSCAPS_SECONDARYSTEREO)) {
-			sdd[i].status = 1;
-			iTotal16SD++;
-			wsprintfA(logtt, "Acceptable device: %d\n", i);
-			PrintLog(logtt);
-		}
-	}
-
-	if (!iTotal16SD) return 0;
-	iCurrentDriver = 0;
-	while (!sdd[iCurrentDriver].status)
-		iCurrentDriver++;
-
-	wsprintfA(logtt, "Device selected  : %d\n", iCurrentDriver);
-	PrintLog(logtt);
-
-
-	hres = DirectSoundCreate(&sdd[iCurrentDriver].Guid, &lpDS, NULL);
-	if ((hres != DS_OK) || (!lpDS)) {
-		wsprintfA(logtt, "DirectSoundCreate Error: %Xh\n", hres);
-		PrintLog(logtt);
-		return 0;
-	}
-	PrintLog("DirectSoundCreate: Ok\n");
-
-
-	PrimaryMode = TRUE;
-	PrintLog("Attempting to set WRITEPRIMARY CooperativeLevel:\n");
-	hres = lpDS->SetCooperativeLevel(hwnd, DSSCL_WRITEPRIMARY);
-	if (hres != DS_OK) {
-		wsprintfA(logtt, "SetCooperativeLevel Error: %Xh\n", hres);
-		PrintLog(logtt);
-		PrimaryMode = FALSE;
-	}
-	else
-		PrintLog("Set Cooperative  : Ok\n");
-
-
-	if (!PrimaryMode) {
-		PrintLog("Attempting to set EXCLUSIVE CooperativeLevel:\n");
-		hres = lpDS->SetCooperativeLevel(hwnd, DSSCL_EXCLUSIVE);
-		if (hres != DS_OK) {
-			wsprintfA(logtt, "==>>SetCooperativeLevel Error: %Xh\n", hres);
-			PrintLog(logtt);
-			return 0;
-		}
-		PrintLog("Set Cooperative  : Ok\n");
-	}
-
-
-	/*======= creating primary buffer ==============*/
-	CopyMemory(&WaveFormat, &wf, sizeof(WAVEFORMATEX));
-
-	DSBUFFERDESC dsbd;
-	dsbd.dwSize = sizeof(DSBUFFERDESC);
-	dsbd.dwFlags = DSBCAPS_PRIMARYBUFFER;
-	dsbd.dwBufferBytes = 0;
-	dsbd.lpwfxFormat = NULL;
-	dsbd.dwReserved = 0;
-
-	hres = lpDS->CreateSoundBuffer(&dsbd, &lpdsPrimary, NULL);
-	if (hres != DS_OK) {
-		wsprintfA(logtt, "==>>CreatePrimarySoundBuffer Error: %Xh\n", hres);
-		PrintLog(logtt);
-		return 0;
-	}
-	PrintLog("CreateSoundBuffer: Ok (Primary)\n");
-	lpdsWork = lpdsPrimary;
-
-	hres = lpdsPrimary->SetFormat(&wf);
-	if (hres != DS_OK) {
-		wsprintfA(logtt, "SetFormat Error: %Xh\n", hres);
-		PrintLog(logtt);
-		return 0;
-	}
-	PrintLog("SetFormat        : Ok\n");
-
-
-
-
-
-	if (PrimaryMode) goto SKIPSECONDARY;
-
-	// ========= creating secondary ================//
-	dsbd.dwSize = sizeof(DSBUFFERDESC);
-	dsbd.dwFlags = 0;
-	dsbd.dwBufferBytes = 2 * 8192;
-	dsbd.lpwfxFormat = &wf;
-	dsbd.dwReserved = 0;
-
-	hres = lpDS->CreateSoundBuffer(&dsbd, &lpdsSecondary, NULL);
-	if (hres != DS_OK) {
-		wsprintfA(logtt, "CreateSecondarySoundBuffer Error: %Xh\n", hres);
-		PrintLog(logtt);
-		return 0;
-	}
-	PrintLog("CreateSoundBuffer: Ok (Secondary)\n");
-	lpdsWork = lpdsSecondary;
-
-
-SKIPSECONDARY:
-
-
-	DSBCAPS dsbc;
-	dsbc.dwSize = sizeof(DSBCAPS);
-	lpdsWork->GetCaps(&dsbc);
-	iBufferLength = dsbc.dwBufferBytes;
-	iBufferLength /= 8192;
-
-	hres = lpdsWork->Play(0, 0, DSBPLAY_LOOPING);
-	if (hres != DS_OK) {
-		wsprintfA(logtt, "Play Error: %Xh\n", hres);
-		PrintLog(logtt);
-		return 0;
-	}
-	PrintLog("Play             : Ok\n");
-
-
-
-
-	iSoundActive = 1;
-	FillMemory(channel, sizeof(CHANNEL) * MAX_CHANNEL, 0);
-	ambient.iLength = 0;
-
-	hAudioThread = CreateThread(NULL, 0, ProcessAudioThread, NULL, 0, &AudioTId);
-	SetThreadPriority(hAudioThread, THREAD_PRIORITY_HIGHEST);
-
-	PrintLog("Direct Sound activated.\n");
-	return 1;
+//	PrintLog("\n");
+//	PrintLog("==Init Direct Sound==\n");
+//
+//	HRESULT hres;
+//	iTotalSoundDevices = 0;
+//
+//	lpSoundBuffer = (char*)_SoundBufferData;
+//	if (!lpSoundBuffer)
+//		return 0;
+//	PrintLog("Back Sound Buffer created.\n");
+//
+//	for (int i = 0; i < MAX_SOUND_DEVICE; i++)
+//		sdd[i].DSC.dwSize = sizeof(DSCAPS);
+//
+//
+//	hres = DirectSoundEnumerate((LPDSENUMCALLBACK)EnumerateSoundDevice, NULL);
+//	if (hres != DS_OK) {
+//		wsprintfA(logtt, "DirectSoundEnumerate Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		return 0;
+//	}
+//	PrintLog("DirectSoundEnumerate: Ok\n");
+//
+//
+//	iTotal16SD = 0;
+//	for (int i = 0; i < iTotalSoundDevices; i++) {
+//		LPDIRECTSOUND lpds;
+//		if (DirectSoundCreate(&sdd[i].Guid, &lpds, NULL) != DS_OK) continue;
+//
+//		if (lpds->GetCaps(&sdd[i].DSC) != DS_OK) continue;
+//
+//		if (sdd[i].DSC.dwFlags & (DSCAPS_PRIMARY16BIT | DSCAPS_PRIMARYSTEREO | DSCAPS_SECONDARY16BIT | DSCAPS_SECONDARYSTEREO)) {
+//			sdd[i].status = 1;
+//			iTotal16SD++;
+//			wsprintfA(logtt, "Acceptable device: %d\n", i);
+//			PrintLog(logtt);
+//		}
+//	}
+//
+//	if (!iTotal16SD) return 0;
+//	iCurrentDriver = 0;
+//	while (!sdd[iCurrentDriver].status)
+//		iCurrentDriver++;
+//
+//	wsprintfA(logtt, "Device selected  : %d\n", iCurrentDriver);
+//	PrintLog(logtt);
+//
+//
+//	hres = DirectSoundCreate(&sdd[iCurrentDriver].Guid, &lpDS, NULL);
+//	if ((hres != DS_OK) || (!lpDS)) {
+//		wsprintfA(logtt, "DirectSoundCreate Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		return 0;
+//	}
+//	PrintLog("DirectSoundCreate: Ok\n");
+//
+//
+//	PrimaryMode = TRUE;
+//	PrintLog("Attempting to set WRITEPRIMARY CooperativeLevel:\n");
+//	hres = lpDS->SetCooperativeLevel(hwnd, DSSCL_WRITEPRIMARY);
+//	if (hres != DS_OK) {
+//		wsprintfA(logtt, "SetCooperativeLevel Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		PrimaryMode = FALSE;
+//	}
+//	else
+//		PrintLog("Set Cooperative  : Ok\n");
+//
+//
+//	if (!PrimaryMode) {
+//		PrintLog("Attempting to set EXCLUSIVE CooperativeLevel:\n");
+//		hres = lpDS->SetCooperativeLevel(hwnd, DSSCL_EXCLUSIVE);
+//		if (hres != DS_OK) {
+//			wsprintfA(logtt, "==>>SetCooperativeLevel Error: %Xh\n", hres);
+//			PrintLog(logtt);
+//			return 0;
+//		}
+//		PrintLog("Set Cooperative  : Ok\n");
+//	}
+//
+//
+//	/*======= creating primary buffer ==============*/
+//	CopyMemory(&WaveFormat, &wf, sizeof(WAVEFORMATEX));
+//
+//	DSBUFFERDESC dsbd;
+//	dsbd.dwSize = sizeof(DSBUFFERDESC);
+//	dsbd.dwFlags = DSBCAPS_PRIMARYBUFFER;
+//	dsbd.dwBufferBytes = 0;
+//	dsbd.lpwfxFormat = NULL;
+//	dsbd.dwReserved = 0;
+//
+//	hres = lpDS->CreateSoundBuffer(&dsbd, &lpdsPrimary, NULL);
+//	if (hres != DS_OK) {
+//		wsprintfA(logtt, "==>>CreatePrimarySoundBuffer Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		return 0;
+//	}
+//	PrintLog("CreateSoundBuffer: Ok (Primary)\n");
+//	lpdsWork = lpdsPrimary;
+//
+//	hres = lpdsPrimary->SetFormat(&wf);
+//	if (hres != DS_OK) {
+//		wsprintfA(logtt, "SetFormat Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		return 0;
+//	}
+//	PrintLog("SetFormat        : Ok\n");
+//
+//
+//
+//
+//
+//	if (PrimaryMode) goto SKIPSECONDARY;
+//
+//	// ========= creating secondary ================//
+//	dsbd.dwSize = sizeof(DSBUFFERDESC);
+//	dsbd.dwFlags = 0;
+//	dsbd.dwBufferBytes = 2 * 8192;
+//	dsbd.lpwfxFormat = &wf;
+//	dsbd.dwReserved = 0;
+//
+//	hres = lpDS->CreateSoundBuffer(&dsbd, &lpdsSecondary, NULL);
+//	if (hres != DS_OK) {
+//		wsprintfA(logtt, "CreateSecondarySoundBuffer Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		return 0;
+//	}
+//	PrintLog("CreateSoundBuffer: Ok (Secondary)\n");
+//	lpdsWork = lpdsSecondary;
+//
+//
+//SKIPSECONDARY:
+//
+//
+//	DSBCAPS dsbc;
+//	dsbc.dwSize = sizeof(DSBCAPS);
+//	lpdsWork->GetCaps(&dsbc);
+//	iBufferLength = dsbc.dwBufferBytes;
+//	iBufferLength /= 8192;
+//
+//	hres = lpdsWork->Play(0, 0, DSBPLAY_LOOPING);
+//	if (hres != DS_OK) {
+//		wsprintfA(logtt, "Play Error: %Xh\n", hres);
+//		PrintLog(logtt);
+//		return 0;
+//	}
+//	PrintLog("Play             : Ok\n");
+//
+//
+//
+//
+//	iSoundActive = 1;
+//	FillMemory(channel, sizeof(CHANNEL) * MAX_CHANNEL, 0);
+//	ambient.iLength = 0;
+//
+//	hAudioThread = CreateThread(NULL, 0, ProcessAudioThread, NULL, 0, &AudioTId);
+//	SetThreadPriority(hAudioThread, THREAD_PRIORITY_HIGHEST);
+//
+//	PrintLog("Direct Sound activated.\n");
+//	return 1;
+return 0;
 }
 
 

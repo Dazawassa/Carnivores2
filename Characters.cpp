@@ -156,9 +156,9 @@ void ActivateCharacterFx(TCharacter* cptr)
 
 	if (VectorLength(SubVectors(PlayerPos, cptr->pos)) > 68 * 256) return;
 
-	AddVoice3d(cptr->pinfo->SoundFX[fx].length,
+	/*AddVoice3d(cptr->pinfo->SoundFX[fx].length,
 		cptr->pinfo->SoundFX[fx].lpData,
-		cptr->pos.x, cptr->pos.y, cptr->pos.z);
+		cptr->pos.x, cptr->pos.y, cptr->pos.z);*/
 }
 
 
@@ -4756,7 +4756,7 @@ void CreateChMorphedModel(TCharacter* cptr)
 	TAni* aptr = &cptr->pinfo->Animation[cptr->Phase];
 	TAni* paptr = &cptr->pinfo->Animation[cptr->PrevPhase];
 
-	int CurFrame, SplineD, PCurFrame, PSplineD;
+	int CurFrame, SplineD, PCurFrame{0}, PSplineD;
 	float scale = cptr->scale;
 
 	CurFrame = ((aptr->FramesCount - 1) * cptr->FTime * 256) / aptr->AniTime;

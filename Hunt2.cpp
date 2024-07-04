@@ -1477,13 +1477,13 @@ SKIPYMOVE:
 		SetAmbient(fxUnderwater.length,
 			fxUnderwater.lpData,
 			240);
-		Audio_SetEnvironment(8, ctViewR * 256);
+		//Audio_SetEnvironment(8, ctViewR * 256);
 	}
 	else {
 		SetAmbient(Ambient[CameraAmb].sfx.length,
 			Ambient[CameraAmb].sfx.lpData,
 			Ambient[CameraAmb].AVolume);
-		Audio_SetEnvironment(Ambient[CameraAmb].rdata[0].REnvir, ctViewR * 256);
+		//Audio_SetEnvironment(Ambient[CameraAmb].rdata[0].REnvir, ctViewR * 256);
 
 		Env = Ambient[CameraAmb].rdata[0].REnvir;
 
@@ -1560,7 +1560,7 @@ void ProcessGame()
 	if (!PAUSE || !MyHealth) {
 		ProcessControls();
 		AudioSetCameraPos(CameraX, CameraY, CameraZ, CameraAlpha, CameraBeta);
-		Audio_UploadGeometry();
+		//Audio_UploadGeometry();
 		AnimateCharacters();
 		AnimateProcesses();
 	}
@@ -1594,7 +1594,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	Init3DHardware();
 	InitEngine();
-	InitAudioSystem(hwndMain, hlog, OptSound);
+	//InitAudioSystem(hwndMain, hlog, OptSound);
 
 	StartLoading();
 	PrintLoad("Loading...");

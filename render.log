@@ -1,0 +1,119 @@
+ Build v2.04. Sep.24 1999.
+Creating main window...Ok.
+
+==Init Direct Draw==
+DirectDrawCreate: Ok
+===> Error loading trophy!
+Init Engine: Ok.
+== Loading resources ==
+Loading common resources: Done.
+Loading textures: Done.
+Loading models: Done.
+Finishing with .res: Done.
+Loading .map: Done.
+Loading area: Done.
+Entering messages loop.
+Entered game
+ReInitGame();
+Placing...
+Loading: HUNTDAT\hunter1.car
+Loading: HUNTDAT\mosh.car
+Loading: HUNTDAT\gall.car
+Loading: HUNTDAT\dimor2.car
+Loading: HUNTDAT\ptera.car
+Loading: HUNTDAT\dimet.car
+Loading: HUNTDAT\brachi1.car
+Loading: HUNTDAT\par2.car
+Loading: HUNTDAT\stego.car
+Loading: HUNTDAT\allo.car
+Loading: HUNTDAT\chasmosa.car
+Loading: HUNTDAT\WEAPONS\pistol.car
+Loading: HUNTDAT\WEAPONS\bullet1.tga
+Loading: HUNTDAT\WEAPONS\shotgun.car
+Loading: HUNTDAT\WEAPONS\bullet2.tga
+Loading: HUNTDAT\WEAPONS\dbsgun.car
+Loading: HUNTDAT\WEAPONS\bullet2.tga
+Loading: HUNTDAT\WEAPONS\x_bow.car
+Loading: HUNTDAT\WEAPONS\bullet4.tga
+Loading: HUNTDAT\WEAPONS\rifle.car
+Loading: HUNTDAT\WEAPONS\bullet3.tga
+
+=== Init Direct3D ===
+Set Display mode 0x0, 16bpp
+QueryInterface: Ok. (IID_IDirect3D)
+CreateSurface: Ok. (Primary)
+EnumDevices: Ok.
+CreateSurface: Ok. (BackBuffer)
+CreateSurface: Ok. (Z-buffer)
+QueryInterface: Ok. (lpd3dDevice)
+CreateViewport: Ok.
+CreateExecuteBuffer: Ok.
+CreateExecuteBuffer: Ok.
+DETECTED: Texture memory : 16384K.
+DETECTED: Texture memory : 16384K.
+DETECTED: PixelFormat RGB565
+TEST COLOR KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+TEST ALPHA KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+ALPHA KEY mode selected.
+=== Direct3D started === 
+
+
+=== Init Direct3D ===
+Set Display mode 0x0, 16bpp
+QueryInterface: Ok. (IID_IDirect3D)
+CreateSurface: Ok. (Primary)
+EnumDevices: Ok.
+CreateSurface: Ok. (BackBuffer)
+CreateSurface: Ok. (Z-buffer)
+QueryInterface: Ok. (lpd3dDevice)
+CreateViewport: Ok.
+CreateExecuteBuffer: Ok.
+CreateExecuteBuffer: Ok.
+DETECTED: Texture memory : 16384K.
+DETECTED: Texture memory : 16384K.
+DETECTED: PixelFormat RGB565
+TEST COLOR KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+TEST ALPHA KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+ALPHA KEY mode selected.
+=== Direct3D started === 
+
+
+=== Init Direct3D ===
+Set Display mode 0x0, 16bpp
+QueryInterface: Ok. (IID_IDirect3D)
+CreateSurface: Ok. (Primary)
+EnumDevices: Ok.
+CreateSurface: Ok. (BackBuffer)
+CreateSurface: Ok. (Z-buffer)
+QueryInterface: Ok. (lpd3dDevice)
+CreateViewport: Ok.
+CreateExecuteBuffer: Ok.
+CreateExecuteBuffer: Ok.
+DETECTED: Texture memory : 16384K.
+DETECTED: Texture memory : 16384K.
+DETECTED: PixelFormat RGB565
+TEST COLOR KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+TEST ALPHA KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+ALPHA KEY mode selected.
+=== Direct3D started === 
+
+
+=== Init Direct3D ===
+Set Display mode 0x0, 16bpp
+QueryInterface: Ok. (IID_IDirect3D)
+CreateSurface: Ok. (Primary)
+EnumDevices: Ok.
+CreateSurface: Ok. (BackBuffer)
+CreateSurface: Ok. (Z-buffer)
+QueryInterface: Ok. (lpd3dDevice)
+CreateViewport: Ok.
+CreateExecuteBuffer: Ok.
+CreateExecuteBuffer: Ok.
+DETECTED: Texture memory : 16384K.
+DETECTED: Texture memory : 16384K.
+DETECTED: PixelFormat RGB565
+TEST COLOR KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+TEST ALPHA KEY: [OPACITY: Ok.] [TRANSPARENT: Ok.] [ENV.BLEND : Ok.]
+ALPHA KEY mode selected.
+=== Direct3D started === 
+
