@@ -1,3 +1,4 @@
+#define _d3d
 #ifdef _d3d
 #include "Hunt.h"
 
@@ -711,7 +712,7 @@ HRESULT WINAPI EnumDeviceCallback(
 {
 	LPD3DDEVICEDESC lpd3dDeviceDesc;
 
-	wsprintf(logt, "ENUMERATE: DDesc: %s DName: %s\n", lpszDeviceDesc, lpszDeviceName);
+	wsprintfA(logt, "ENUMERATE: DDesc: %s DName: %s\n", lpszDeviceDesc, lpszDeviceName);
 	//PrintLog(logt);
 	if (!lpd3dHWDeviceDesc->dcmColorModel)
 		return D3DENUMRET_OK; // we don't need SW rasterizer
@@ -756,7 +757,7 @@ HRESULT CreateDirect3D(HWND hwnd)
 		hRes = lpDD->SetDisplayMode(WinW, WinH, 16);
 	}
 	if (FAILED(hRes)) DoHalt("Error setting display mode\n");
-	wsprintf(logt, "Set Display mode %dx%d, 16bpp\n", WinW, WinH);
+	wsprintfA(logt, "Set Display mode %dx%d, 16bpp\n", WinW, WinH);
 	PrintLog(logt);
 
 	hRes = lpDD->QueryInterface(IID_IDirect3D, (LPVOID*)&lpd3d);
@@ -949,7 +950,7 @@ void Init3DHardware()
 
 	hres = DirectDrawCreate(NULL, &lpDD, NULL);
 	if (hres != DD_OK) {
-		wsprintf(logt, "DirectDrawCreate Error: %Xh\n", hres);
+		wsprintfA(logt, "DirectDrawCreate Error: %Xh\n", hres);
 		DoHalt(logt);
 	}
 	PrintLog("DirectDrawCreate: Ok\n");
@@ -965,21 +966,24 @@ void d3dDetectCaps()
 	for (int t = 0; t < d3dmemmapsize; t++) {
 		if (!d3dAllocTexture(t, 256, 256)) break;
 	}
-
-	d3dTexturesMem = t * 256 * 256 * 2;
+	
+	{
+		int t = d3dmemmapsize;
+		d3dTexturesMem = t * 256 * 256 * 2;
+	}
 
 
 	d3dDownLoadTexture(0, 256, 256, SkyPic);
 	DWORD T;
 	T = timeGetTime();
-	for (t = 0; t < 10; t++) d3dDownLoadTexture(0, 256, 256, SkyPic);
+	for (int t = 0; t < 10; t++) d3dDownLoadTexture(0, 256, 256, SkyPic);
 	T = timeGetTime() - T;
 
-	wsprintf(logt, "DETECTED: Texture memory : %dK.\n", d3dTexturesMem >> 10);
+	wsprintfA(logt, "DETECTED: Texture memory : %dK.\n", d3dTexturesMem >> 10);
 	PrintLog(logt);
 	ResetTextureMap();
 
-	wsprintf(logt, "DETECTED: Texture transfer speed: %dK/sec.\n", 128 * 10000 / T);
+	wsprintfA(logt, "DETECTED: Texture transfer speed: %dK/sec.\n", 128 * 10000 / T);
 	PrintLog(logt);
 
 
@@ -1520,7 +1524,7 @@ void TryHiResTx()
 			UsedMem += d3dMemMap[m].size;
 	}
 	/*
-	  wsprintf(logt, "TOTALL: %d USED: %d", d3dTexturesMem, UsedMem);
+	  wsprintfA(logt, "TOTALL: %d USED: %d", d3dTexturesMem, UsedMem);
 	  AddMessage(logt);
 	*/
 	if (UsedMem * 4 < (int)d3dTexturesMem)
@@ -1532,7 +1536,7 @@ void ShowVideo()
 {
 	/*
   char t[128];
-  wsprintf(t, "T-mem loaded: %dK", d3dMemLoaded >> 10);
+  wsprintfA(t, "T-mem loaded: %dK", d3dMemLoaded >> 10);
   if (d3dMemLoaded) AddMessage(t);
   */
 
@@ -1648,14 +1652,14 @@ void ddTextOut(int x, int y, LPSTR t, int color)
 	lpddBack->GetDC(&ddBackDC);
 	SetBkMode(ddBackDC, TRANSPARENT);
 
-	HFONT oldfont;
+	HFONT oldfont = NULL;
 	if (SmallFont) oldfont = (HFONT)SelectObject(ddBackDC, fnt_Small);
 
 	SetTextColor(ddBackDC, 0x00101010);
-	TextOut(ddBackDC, x + 2, y + 1, t, strlen(t));
+	TextOutA(ddBackDC, x + 2, y + 1, t, strlen(t));
 
 	SetTextColor(ddBackDC, color);
-	TextOut(ddBackDC, x + 1, y, t, strlen(t));
+	TextOutA(ddBackDC, x + 1, y, t, strlen(t));
 
 	if (SmallFont) SelectObject(ddBackDC, oldfont);
 
@@ -1703,10 +1707,10 @@ void DrawTrophyText(int x0, int y0)
 
 	x = x0;
 	ddTextOut(x, y0 + 32, "Weapon: ", 0x00BFBFBF);  x += GetTextW(hdcMain, "Weapon: ");
-	wsprintf(t, "%s    ", WeapInfo[wep].Name);
+	wsprintfA(t, "%s    ", WeapInfo[wep].Name);
 	ddTextOut(x, y0 + 32, t, 0x0000BFBF);   x += GetTextW(hdcMain, t);
 	ddTextOut(x, y0 + 32, "Score: ", 0x00BFBFBF);   x += GetTextW(hdcMain, "Score: ");
-	wsprintf(t, "%d", score);
+	wsprintfA(t, "%d", score);
 	ddTextOut(x, y0 + 32, t, 0x0000BFBF);
 
 
@@ -1720,13 +1724,13 @@ void DrawTrophyText(int x0, int y0)
 	x = x0;
 	ddTextOut(x, y0 + 64, "Date: ", 0x00BFBFBF);  x += GetTextW(hdcMain, "Date: ");
 	if (OptSys)
-		wsprintf(t, "%d.%d.%d   ", ((date >> 10) & 255), (date & 255), date >> 20);
+		wsprintfA(t, "%d.%d.%d   ", ((date >> 10) & 255), (date & 255), date >> 20);
 	else
-		wsprintf(t, "%d.%d.%d   ", (date & 255), ((date >> 10) & 255), date >> 20);
+		wsprintfA(t, "%d.%d.%d   ", (date & 255), ((date >> 10) & 255), date >> 20);
 
 	ddTextOut(x, y0 + 64, t, 0x0000BFBF);   x += GetTextW(hdcMain, t);
 	ddTextOut(x, y0 + 64, "Time: ", 0x00BFBFBF);   x += GetTextW(hdcMain, "Time: ");
-	wsprintf(t, "%d:%02d", ((time >> 10) & 255), (time & 255));
+	wsprintfA(t, "%d:%02d", ((time >> 10) & 255), (time & 255));
 	ddTextOut(x, y0 + 64, t, 0x0000BFBF);
 
 	SmallFont = FALSE;
@@ -1785,13 +1789,13 @@ void ShowControlElements()
 	lpddBack->ReleaseDC(ddBackDC);
 
 	if (TIMER) {
-		wsprintf(buf, "msc: %d", TimeDt);
+		wsprintfA(buf, "msc: %d", TimeDt);
 		ddTextOut(WinEX - 81, 11, buf, 0x0020A0A0);
 
-		wsprintf(buf, "polys: %d", dFacesCount);
+		wsprintfA(buf, "polys: %d", dFacesCount);
 		ddTextOut(WinEX - 90, 24, buf, 0x0020A0A0);
 
-		wsprintf(buf, "%d", Env);
+		wsprintfA(buf, "%d", Env);
 		ddTextOut(10, 24, buf, 0x0020A0A0);
 
 	}
@@ -1803,9 +1807,9 @@ void ShowControlElements()
 
 	if (ExitTime) {
 		int y = WinH / 3;
-		wsprintf(buf, "Preparing for evacuation...");
+		wsprintfA(buf, "Preparing for evacuation...");
 		ddTextOut(VideoCX - GetTextW(hdcCMain, buf) / 2, y, buf, 0x0060C0D0);
-		wsprintf(buf, "%d seconds left.", 1 + ExitTime / 1000);
+		wsprintfA(buf, "%d seconds left.", 1 + ExitTime / 1000);
 		ddTextOut(VideoCX - GetTextW(hdcCMain, buf) / 2, y + 18, buf, 0x0060C0D0);
 	}
 }
@@ -2528,7 +2532,7 @@ void _RenderObject(int x, int y)
 
 	if (!MObjects[ob].model) {
 		//return;
-		wsprintf(logt, "Incorrect model at [%d][%d]!", x, y);
+		wsprintfA(logt, "Incorrect model at [%d][%d]!", x, y);
 		DoHalt(logt);
 	}
 
@@ -5044,7 +5048,7 @@ void RenderHealthBar()
 		lpVertex++;
 	}
 
-	for (y = 1; y < 3; y++) {
+	for (int y = 1; y < 3; y++) {
 		lpVertex->sx = (float)x0;
 		lpVertex->sy = (float)y0 + y;
 		lpVertex->sz = 0.99999f;
@@ -5100,7 +5104,7 @@ void RenderHealthBar()
 	lpInstruction++;
 	lpLine = (LPD3DLINE)lpInstruction;
 
-	for (y = 0; y < 6; y++) {
+	for (int y = 0; y < 6; y++) {
 		lpLine->wV1 = y * 2;
 		lpLine->wV2 = y * 2 + 1;
 		lpLine++;

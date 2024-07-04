@@ -888,7 +888,7 @@ BOOL CreateMainWindow()
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInst;
-	wc.hIcon = wc.hIcon = (HICON)LoadIcon(hInst, L"ACTION");
+	wc.hIcon = wc.hIcon = (HICON)LoadIconA(hInst, "ACTION");
 	wc.hCursor = NULL;
 	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wc.lpszMenuName = NULL;

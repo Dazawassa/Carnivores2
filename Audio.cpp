@@ -58,7 +58,7 @@ int InitDirectSound(HWND hwnd)
 
 	hres = DirectSoundEnumerate((LPDSENUMCALLBACK)EnumerateSoundDevice, NULL);
 	if (hres != DS_OK) {
-		wsprintf(logtt, "DirectSoundEnumerate Error: %Xh\n", hres);
+		wsprintfA(logtt, "DirectSoundEnumerate Error: %Xh\n", hres);
 		PrintLog(logtt);
 		return 0;
 	}
@@ -75,7 +75,7 @@ int InitDirectSound(HWND hwnd)
 		if (sdd[i].DSC.dwFlags & (DSCAPS_PRIMARY16BIT | DSCAPS_PRIMARYSTEREO | DSCAPS_SECONDARY16BIT | DSCAPS_SECONDARYSTEREO)) {
 			sdd[i].status = 1;
 			iTotal16SD++;
-			wsprintf(logtt, "Acceptable device: %d\n", i);
+			wsprintfA(logtt, "Acceptable device: %d\n", i);
 			PrintLog(logtt);
 		}
 	}
@@ -85,13 +85,13 @@ int InitDirectSound(HWND hwnd)
 	while (!sdd[iCurrentDriver].status)
 		iCurrentDriver++;
 
-	wsprintf(logtt, "Device selected  : %d\n", iCurrentDriver);
+	wsprintfA(logtt, "Device selected  : %d\n", iCurrentDriver);
 	PrintLog(logtt);
 
 
 	hres = DirectSoundCreate(&sdd[iCurrentDriver].Guid, &lpDS, NULL);
 	if ((hres != DS_OK) || (!lpDS)) {
-		wsprintf(logtt, "DirectSoundCreate Error: %Xh\n", hres);
+		wsprintfA(logtt, "DirectSoundCreate Error: %Xh\n", hres);
 		PrintLog(logtt);
 		return 0;
 	}
@@ -102,7 +102,7 @@ int InitDirectSound(HWND hwnd)
 	PrintLog("Attempting to set WRITEPRIMARY CooperativeLevel:\n");
 	hres = lpDS->SetCooperativeLevel(hwnd, DSSCL_WRITEPRIMARY);
 	if (hres != DS_OK) {
-		wsprintf(logtt, "SetCooperativeLevel Error: %Xh\n", hres);
+		wsprintfA(logtt, "SetCooperativeLevel Error: %Xh\n", hres);
 		PrintLog(logtt);
 		PrimaryMode = FALSE;
 	}
@@ -114,7 +114,7 @@ int InitDirectSound(HWND hwnd)
 		PrintLog("Attempting to set EXCLUSIVE CooperativeLevel:\n");
 		hres = lpDS->SetCooperativeLevel(hwnd, DSSCL_EXCLUSIVE);
 		if (hres != DS_OK) {
-			wsprintf(logtt, "==>>SetCooperativeLevel Error: %Xh\n", hres);
+			wsprintfA(logtt, "==>>SetCooperativeLevel Error: %Xh\n", hres);
 			PrintLog(logtt);
 			return 0;
 		}
@@ -134,7 +134,7 @@ int InitDirectSound(HWND hwnd)
 
 	hres = lpDS->CreateSoundBuffer(&dsbd, &lpdsPrimary, NULL);
 	if (hres != DS_OK) {
-		wsprintf(logtt, "==>>CreatePrimarySoundBuffer Error: %Xh\n", hres);
+		wsprintfA(logtt, "==>>CreatePrimarySoundBuffer Error: %Xh\n", hres);
 		PrintLog(logtt);
 		return 0;
 	}
@@ -143,7 +143,7 @@ int InitDirectSound(HWND hwnd)
 
 	hres = lpdsPrimary->SetFormat(&wf);
 	if (hres != DS_OK) {
-		wsprintf(logtt, "SetFormat Error: %Xh\n", hres);
+		wsprintfA(logtt, "SetFormat Error: %Xh\n", hres);
 		PrintLog(logtt);
 		return 0;
 	}
@@ -164,7 +164,7 @@ int InitDirectSound(HWND hwnd)
 
 	hres = lpDS->CreateSoundBuffer(&dsbd, &lpdsSecondary, NULL);
 	if (hres != DS_OK) {
-		wsprintf(logtt, "CreateSecondarySoundBuffer Error: %Xh\n", hres);
+		wsprintfA(logtt, "CreateSecondarySoundBuffer Error: %Xh\n", hres);
 		PrintLog(logtt);
 		return 0;
 	}
@@ -183,7 +183,7 @@ SKIPSECONDARY:
 
 	hres = lpdsWork->Play(0, 0, DSBPLAY_LOOPING);
 	if (hres != DS_OK) {
-		wsprintf(logtt, "Play Error: %Xh\n", hres);
+		wsprintfA(logtt, "Play Error: %Xh\n", hres);
 		PrintLog(logtt);
 		return 0;
 	}
@@ -323,7 +323,7 @@ BOOL CALLBACK EnumerateSoundDevice(GUID* lpGuid, LPSTR lpstrDescription, LPSTR l
 			return TRUE;
 		else
 			return FALSE;
-	wsprintf(logtt, "Device%d: ", iTotalSoundDevices);
+	wsprintfA(logtt, "Device%d: ", iTotalSoundDevices);
 	PrintLog(logtt);
 	PrintLog(lpstrDescription);
 	PrintLog("/");
