@@ -44,7 +44,7 @@ BOOL _HeapFree(HANDLE hHeap,
 void AddMessage(LPSTR mt)
 {
 	MessageList.timeleft = timeGetTime() + 2 * 1000;
-	lstrcpy(MessageList.mtext, mt);
+	lstrcpyA(MessageList.mtext, mt);
 }
 
 void PlaceHunter()
@@ -694,13 +694,13 @@ void LoadAnimation(TVTL& vtl)
 void LoadModelEx(TModel*& mptr, char* FName)
 {
 
-	hfile = CreateFile(FName,
+	hfile = CreateFileA(FName,
 		GENERIC_READ, FILE_SHARE_READ,
 		NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hfile == INVALID_HANDLE_VALUE) {
 		char sz[512];
-		wsprintf(sz, "Error opening file\n%s.", FName);
+		wsprintfA(sz, "Error opening file\n%s.", FName);
 		DoHalt(sz);
 	}
 
@@ -744,10 +744,10 @@ void LoadWav(char* FName, TSFX& sfx)
 {
 	DWORD l;
 
-	HANDLE hfile = CreateFile(FName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hfile = CreateFileA(FName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hfile == INVALID_HANDLE_VALUE) {
 		char sz[512];
-		wsprintf(sz, "Error opening file\n%s.", FName);
+		wsprintfA(sz, "Error opening file\n%s.", FName);
 		DoHalt(sz);
 	}
 
@@ -762,7 +762,7 @@ void LoadWav(char* FName, TSFX& sfx)
 		ReadFile(hfile, c, 1, &l, NULL);
 		if (c[0] == 'd') {
 			ReadFile(hfile, &c[1], 3, &l, NULL);
-			if (!lstrcmp(c, "data")) break;
+			if (!lstrcmpA(c, "data")) break;
 			else SetFilePointer(hfile, -3, NULL, FILE_CURRENT);
 		}
 	}
@@ -814,10 +814,10 @@ void LoadPicture(TPicture& pic, LPSTR pname)
 	DWORD l;
 	HANDLE hfile;
 
-	hfile = CreateFile(pname, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	hfile = CreateFileA(pname, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hfile == INVALID_HANDLE_VALUE) {
 		char sz[512];
-		wsprintf(sz, "Error opening file\n%s.", pname);
+		wsprintfA(sz, "Error opening file\n%s.", pname);
 		DoHalt(sz);
 	}
 
@@ -854,10 +854,10 @@ void LoadPictureTGA(TPicture& pic, LPSTR pname)
 	HANDLE hfile;
 
 
-	hfile = CreateFile(pname, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	hfile = CreateFileA(pname, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hfile == INVALID_HANDLE_VALUE) {
 		char sz[512];
-		wsprintf(sz, "Error opening file\n%s.", pname);
+		wsprintfA(sz, "Error opening file\n%s.", pname);
 		DoHalt(sz);
 	}
 
@@ -1160,8 +1160,8 @@ void LoadResources()
 		ctViewR = 60;
 		ctViewR1 = 48;
 	}
-	wsprintf(MapName, "%s%s", ProjectName, ".map");
-	wsprintf(RscName, "%s%s", ProjectName, ".rsc");
+	wsprintfA(MapName, "%s%s", ProjectName, ".map");
+	wsprintfA(RscName, "%s%s", ProjectName, ".rsc");
 
 	ReleaseResources();
 
@@ -1173,13 +1173,13 @@ void LoadResources()
 
 
 
-	hfile = CreateFile(RscName,
+	hfile = CreateFileA(RscName,
 		GENERIC_READ, FILE_SHARE_READ,
 		NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hfile == INVALID_HANDLE_VALUE) {
 		char sz[512];
-		wsprintf(sz, "Error opening resource file\n%s.", RscName);
+		wsprintfA(sz, "Error opening resource file\n%s.", RscName);
 		DoHalt(sz);
 		return;
 	}
@@ -1344,7 +1344,7 @@ void LoadResources()
 	//================ Load MAPs file ==================//
 	PrintLoad("Loading .map...");
 	PrintLog("Loading .map:");
-	hfile = CreateFile(MapName,
+	hfile = CreateFileA(MapName,
 		GENERIC_READ, FILE_SHARE_READ,
 		NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -1409,7 +1409,7 @@ void LoadCharacters()
 
 	for (int c = 0; c < TotalC; c++) if (pres[c]) {
 		if (!ChInfo[c].mptr) {
-			wsprintf(logt, "HUNTDAT\\%s", DinoInfo[c].FName);
+			wsprintfA(logt, "HUNTDAT\\%s", DinoInfo[c].FName);
 			LoadCharacterInfo(ChInfo[c], logt);
 			PrintLog("Loading: ");	PrintLog(logt);	PrintLog("\n");
 		}
@@ -1418,7 +1418,7 @@ void LoadCharacters()
 	for (int c = 10; c < 20; c++)
 		if (TargetDino & (1 << c))
 			if (!DinoInfo[AI_to_CIndex[c]].CallIcon.lpImage) {
-				wsprintf(logt, "HUNTDAT\\MENU\\PICS\\call%d.tga", c - 9);
+				wsprintfA(logt, "HUNTDAT\\MENU\\PICS\\call%d.tga", c - 9);
 				LoadPictureTGA(DinoInfo[AI_to_CIndex[c]].CallIcon, logt);
 				conv_pic(DinoInfo[AI_to_CIndex[c]].CallIcon);
 			}
@@ -1427,14 +1427,14 @@ void LoadCharacters()
 	for (int c = 0; c < TotalW; c++)
 		if (WeaponPres & (1 << c)) {
 			if (!Weapon.chinfo[c].mptr) {
-				wsprintf(logt, "HUNTDAT\\WEAPONS\\%s", WeapInfo[c].FName);
+				wsprintfA(logt, "HUNTDAT\\WEAPONS\\%s", WeapInfo[c].FName);
 				LoadCharacterInfo(Weapon.chinfo[c], logt);
 				PrintLog("Loading: ");  PrintLog(logt);  PrintLog("\n");
 			}
 
 
 			if (!Weapon.BulletPic[c].lpImage) {
-				wsprintf(logt, "HUNTDAT\\WEAPONS\\%s", WeapInfo[c].BFName);
+				wsprintfA(logt, "HUNTDAT\\WEAPONS\\%s", WeapInfo[c].BFName);
 				LoadPictureTGA(Weapon.BulletPic[c], logt);
 				conv_pic(Weapon.BulletPic[c]);
 				PrintLog("Loading: ");  PrintLog(logt);  PrintLog("\n");
@@ -1445,11 +1445,11 @@ void LoadCharacters()
 	for (int c = 10; c < 20; c++)
 		if (TargetDino & (1 << c))
 			if (!fxCall[c - 10][0].lpData) {
-				wsprintf(logt, "HUNTDAT\\SOUNDFX\\CALLS\\call%d_a.wav", (c - 9));
+				wsprintfA(logt, "HUNTDAT\\SOUNDFX\\CALLS\\call%d_a.wav", (c - 9));
 				LoadWav(logt, fxCall[c - 10][0]);
-				wsprintf(logt, "HUNTDAT\\SOUNDFX\\CALLS\\call%d_b.wav", (c - 9));
+				wsprintfA(logt, "HUNTDAT\\SOUNDFX\\CALLS\\call%d_b.wav", (c - 9));
 				LoadWav(logt, fxCall[c - 10][1]);
-				wsprintf(logt, "HUNTDAT\\SOUNDFX\\CALLS\\call%d_c.wav", (c - 9));
+				wsprintfA(logt, "HUNTDAT\\SOUNDFX\\CALLS\\call%d_c.wav", (c - 9));
 				LoadWav(logt, fxCall[c - 10][2]);
 			}
 }
@@ -1547,13 +1547,13 @@ void LoadCharacterInfo(TCharacterInfo& chinfo, char* FName)
 {
 	ReleaseCharacterInfo(chinfo);
 
-	HANDLE hfile = CreateFile(FName,
+	HANDLE hfile = CreateFileA(FName,
 		GENERIC_READ, FILE_SHARE_READ,
 		NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hfile == INVALID_HANDLE_VALUE) {
 		char sz[512];
-		wsprintf(sz, "Error opening character file:\n%s.", FName);
+		wsprintfA(sz, "Error opening character file:\n%s.", FName);
 		DoHalt(sz);
 	}
 
@@ -1767,8 +1767,8 @@ void SaveScreenShot()
 
 
 	char t[12];
-	wsprintf(t, "HUNT%004d.BMP", ++_shotcounter);
-	hf = CreateFile(t,
+	wsprintfA(t, "HUNT%004d.BMP", ++_shotcounter);
+	hf = CreateFileA(t,
 		GENERIC_READ | GENERIC_WRITE,
 		(DWORD)0,
 		(LPSECURITY_ATTRIBUTES)NULL,
@@ -1949,7 +1949,7 @@ void LoadResourcesScript()
 void CreateLog()
 {
 
-	hlog = CreateFile("render.log",
+	hlog = CreateFileA("render.log",
 		GENERIC_WRITE,
 		FILE_SHARE_READ, NULL,
 		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);

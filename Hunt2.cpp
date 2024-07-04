@@ -619,8 +619,8 @@ void SwitchMode(LPSTR lps, BOOL& b)
 {
 	b = !b;
 	char buf[200];
-	if (b) wsprintf(buf, "%s is ON", lps);
-	else wsprintf(buf, "%s is OFF", lps);
+	if (b) wsprintfA(buf, "%s is ON", lps);
+	else wsprintfA(buf, "%s is OFF", lps);
 	MessageBeep(0xFFFFFFFF);
 	AddMessage(buf);
 }
@@ -640,7 +640,7 @@ void ChangeViewR(int d1, int d2, int d3)
 	if (ctViewRM < 4) ctViewRM = 4;
 	if (ctViewRM > 60) ctViewRM = 60;
 
-	wsprintf(buf, "ViewR = %d (%d + %d) BMP at %d", ctViewR, ctViewR1, ctViewR - ctViewR1, ctViewRM);
+	wsprintfA(buf, "ViewR = %d (%d + %d) BMP at %d", ctViewR, ctViewR1, ctViewR - ctViewR1, ctViewRM);
 	//MessageBeep(0xFFFFFFFF);
 	AddMessage(buf);
 
@@ -896,7 +896,7 @@ BOOL CreateMainWindow()
 	wc.lpszClassName = L"HuntRenderWindow";
 	if (!RegisterClass(&wc)) return FALSE;
 
-	hwndMain = CreateWindow(
+	hwndMain = CreateWindowA(
 		"HuntRenderWindow", "Carnivores 2 Renderer",
 		WS_VISIBLE | WS_POPUP,
 		0, 0, 0, 0, NULL, NULL, hInst, NULL);
@@ -1582,8 +1582,7 @@ void ProcessGame()
 }
 
 
-
-int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpszCmdLine, int nCmdShow)
 {
 	MSG msg;

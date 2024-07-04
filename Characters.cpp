@@ -1,5 +1,4 @@
 #include "Hunt.h"
-#include "stdio.h"
 
 BOOL NewPhase;
 
@@ -4582,9 +4581,9 @@ void CheckAfraid()
 			MessageBeep(0xFFFFFFFF);
 			char t[128];
 			if (kALook < kASmell)
-				sprintf(t, "LOOK: KR: %f  Tr: %d  K: %f", kR, ObjectsOnLook, kALook);
+				wsprintfA(t, "LOOK: KR: %f  Tr: %d  K: %f", kR, ObjectsOnLook, kALook);
 			else
-				sprintf(t, "SMELL: KR: %f  Tr: %d  K: %f", kR, ObjectsOnLook, kASmell);
+				wsprintfA(t, "SMELL: KR: %f  Tr: %d  K: %f", kR, ObjectsOnLook, kASmell);
 			AddMessage(t);
 
 			kRes = min(kRes, kR);

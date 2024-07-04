@@ -48,12 +48,15 @@ void CreateLoadDIB()
 void UpdateLWindow()
 {
 	lock = TRUE;
-	HBITMAP hbmpOld = SelectObject(hdcCLoad, hbmpLoad);
-	HFONT   hfntOld = SelectObject(hdcCLoad, fnt_Small);
+	// XXX: This is likely a really bad idea, but let's see if it satisfies the compiler.
+	// if this crashes, we have no idea what the correct alternative is without finding 
+	// an original compiler, and hoping.
+	HBITMAP hbmpOld = reinterpret_cast<HBITMAP>(SelectObject(hdcCLoad, hbmpLoad));
+	HFONT   hfntOld = reinterpret_cast<HFONT>(SelectObject(hdcCLoad, fnt_Small));
 
 	FillMemory(lpLoadVideoBuf, winw * winh * 2, 1);
 
-	TextOut(hdcCLoad, 10, winh - 16, txt, strlen(txt));
+	TextOutA(hdcCLoad, 10, winh - 16, txt, strlen(txt));
 
 	BitBlt(hdcLoad, 0, 0, winw, winh, hdcCLoad, 0, 0, SRCCOPY);
 	MessageBeep(0xFFFFFFFF);
@@ -91,20 +94,22 @@ LONG APIENTRY LoadWndProc(HWND hWnd, UINT message, UINT wParam, LONG lParam)
 
 DWORD WINAPI ProcessLoading(LPVOID ptr)
 {
-	WNDCLASS wc;
+	WNDCLASSA wc;
 	wc.style = CS_OWNDC;
 	wc.lpfnWndProc = (WNDPROC)LoadWndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInst;
-	wc.hIcon = wc.hIcon = LoadIcon(hInst, "ACTION");
+	wc.hIcon = wc.hIcon = LoadIconA(hInst, "ACTION");
 	wc.hCursor = NULL;
-	wc.hbrBackground = GetStockObject(BLACK_BRUSH);
+	/// XXX: This is another case where we're just trying to make it compile
+	/// lord help the person who experiences a crash here.
+	wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
 	wc.lpszMenuName = NULL;
 	wc.lpszClassName = "HuntLoadingWindow";
-	if (!RegisterClass(&wc)) return FALSE;
+	if (!RegisterClassA(&wc)) return FALSE;
 
-	hwndLoad = CreateWindow(
+	hwndLoad = CreateWindowA(
 		"HuntLoadingWindow", "Loading...",
 		WS_VISIBLE | WS_POPUP,
 		400 - winw / 2, 300 - winh / 2, winw, winh, NULL, NULL, hInst, NULL);

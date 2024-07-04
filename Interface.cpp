@@ -50,7 +50,7 @@ void wait_mouse_release()
 int GetTextW(HDC hdc, LPSTR s)
 {
 	SIZE sz;
-	GetTextExtentPoint(hdc, s, strlen(s), &sz);
+	GetTextExtentPointA(hdc, s, strlen(s), &sz);
 	return sz.cx;
 }
 
@@ -60,9 +60,9 @@ void PrintText(LPSTR s, int x, int y, int rgb)
 	SetBkMode(hdcCMain, TRANSPARENT);
 
 	SetTextColor(hdcCMain, 0x00000000);
-	TextOut(hdcCMain, x + 1, y + 1, s, strlen(s));
+	TextOutA(hdcCMain, x + 1, y + 1, s, strlen(s));
 	SetTextColor(hdcCMain, rgb);
-	TextOut(hdcCMain, x, y, s, strlen(s));
+	TextOutA(hdcCMain, x, y, s, strlen(s));
 
 	SelectObject(hdcCMain, hbmpOld);
 }
@@ -78,7 +78,7 @@ void DoHalt(LPSTR Mess)
 		PrintLog("ABNORMAL_HALT: ");
 		PrintLog(Mess);
 		PrintLog("\n");
-		MessageBox(NULL, Mess, "Carnivores Termination", IDOK | MB_SYSTEMMODAL | MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, Mess, "Carnivores Termination", IDOK | MB_SYSTEMMODAL | MB_ICONEXCLAMATION);
 	}
 
 	CloseLog();

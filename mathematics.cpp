@@ -20,8 +20,7 @@ void NormVector(Vector3d& v, float Scale)
 
 float SGN(float f)
 {
-	if (f < 0) return -1.f;
-	else return  1.f;
+	return f < 0 ? -1.f : 1.f;
 }
 
 void DeltaFunc(float& a, float b, float d)

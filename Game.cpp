@@ -60,7 +60,7 @@ void UploadGeometry()
 
 	if (ShowFaces)
 	{
-		wsprintf(logt, "Audio_UpdateGeometry: %i faces uploaded\n", AudioFCount); PrintLog(logt);
+		wsprintfA(logt, "Audio_UpdateGeometry: %i faces uploaded\n", AudioFCount); PrintLog(logt);
 
 		ShowFaces = false;
 	}
@@ -791,7 +791,7 @@ void InitEngine()
 
 	Heap = HeapCreate(0, 60000000, 64000000);
 	if (Heap == NULL) {
-		MessageBox(hwndMain, "Error creating heap.", "Error", IDOK);
+		MessageBoxA(hwndMain, "Error creating heap.", "Error", IDOK);
 		return;
 	}
 
@@ -1615,8 +1615,8 @@ void LoadTrophy()
 	DWORD l;
 	char fname[128];
 	int rn = TrophyRoom.RegNumber;
-	wsprintf(fname, "trophy0%d.sav", TrophyRoom.RegNumber);
-	HANDLE hfile = CreateFile(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	wsprintfA(fname, "trophy0%d.sav", TrophyRoom.RegNumber);
+	HANDLE hfile = CreateFileA(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hfile == INVALID_HANDLE_VALUE) {
 		PrintLog("===> Error loading trophy!\n");
 		return;
@@ -1665,7 +1665,7 @@ void SaveTrophy()
 {
 	DWORD l;
 	char fname[128];
-	wsprintf(fname, "trophy0%d.sav", TrophyRoom.RegNumber);
+	wsprintfA(fname, "trophy0%d.sav", TrophyRoom.RegNumber);
 
 	int r = TrophyRoom.Rank;
 	TrophyRoom.Rank = 0;
@@ -1673,7 +1673,7 @@ void SaveTrophy()
 	if (TrophyRoom.Score >= 300) TrophyRoom.Rank = 2;
 
 
-	HANDLE hfile = CreateFile(fname, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hfile = CreateFileA(fname, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hfile == INVALID_HANDLE_VALUE) {
 		PrintLog("==>> Error saving trophy!\n");
 		return;
