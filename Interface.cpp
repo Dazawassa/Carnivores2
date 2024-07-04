@@ -26,9 +26,9 @@ BOOL NEWPLAYER = FALSE;
 
 int  MapVKKey(int k)
 {
-	if (k==VK_LBUTTON) return 124;
-	if (k==VK_RBUTTON) return 125;
-	return MapVirtualKey(k , 0);
+	if (k == VK_LBUTTON) return 124;
+	if (k == VK_RBUTTON) return 125;
+	return MapVirtualKey(k, 0);
 }
 
 
@@ -41,64 +41,64 @@ int OptLine = 0;
 
 void wait_mouse_release()
 {
-    while (GetAsyncKeyState(VK_RBUTTON) & 0x80000000);
+	while (GetAsyncKeyState(VK_RBUTTON) & 0x80000000);
 	while (GetAsyncKeyState(VK_LBUTTON) & 0x80000000);
-		
+
 }
 
 
 int GetTextW(HDC hdc, LPSTR s)
 {
-  SIZE sz;
-  GetTextExtentPoint(hdc, s, strlen(s), &sz);
-  return sz.cx;
+	SIZE sz;
+	GetTextExtentPoint(hdc, s, strlen(s), &sz);
+	return sz.cx;
 }
 
 void PrintText(LPSTR s, int x, int y, int rgb)
 {
-  HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcCMain,hbmpVideoBuf);   
-  SetBkMode(hdcCMain, TRANSPARENT);     
-   
-  SetTextColor(hdcCMain, 0x00000000);  
-  TextOut(hdcCMain, x+1, y+1, s, strlen(s));
-  SetTextColor(hdcCMain, rgb);
-  TextOut(hdcCMain, x, y, s, strlen(s));
+	HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcCMain, hbmpVideoBuf);
+	SetBkMode(hdcCMain, TRANSPARENT);
 
-  SelectObject(hdcCMain,hbmpOld);		  
+	SetTextColor(hdcCMain, 0x00000000);
+	TextOut(hdcCMain, x + 1, y + 1, s, strlen(s));
+	SetTextColor(hdcCMain, rgb);
+	TextOut(hdcCMain, x, y, s, strlen(s));
+
+	SelectObject(hdcCMain, hbmpOld);
 }
 
 void DoHalt(LPSTR Mess)
-{  
-  AudioStop();
-  Audio_Shutdown();
+{
+	AudioStop();
+	Audio_Shutdown();
 
-  ShutDown3DHardware();
-  EnableWindow(hwndMain, FALSE);
-  if (strlen(Mess)) {
-	PrintLog("ABNORMAL_HALT: ");
-	PrintLog(Mess);
-	PrintLog("\n");
-    MessageBox(NULL, Mess, "Carnivores Termination", IDOK | MB_SYSTEMMODAL | MB_ICONEXCLAMATION);
-  }
+	ShutDown3DHardware();
+	EnableWindow(hwndMain, FALSE);
+	if (strlen(Mess)) {
+		PrintLog("ABNORMAL_HALT: ");
+		PrintLog(Mess);
+		PrintLog("\n");
+		MessageBox(NULL, Mess, "Carnivores Termination", IDOK | MB_SYSTEMMODAL | MB_ICONEXCLAMATION);
+	}
 
-  CloseLog();
-  TerminateProcess(GetCurrentProcess(), 0);
+	CloseLog();
+	TerminateProcess(GetCurrentProcess(), 0);
 }
 
 
 void WaitRetrace()
 {
-    BOOL bv = FALSE;
-    if (DirectActive)
-      while (!bv)  lpDD->GetVerticalBlankStatus(&bv);
+	BOOL bv = FALSE;
+	if (DirectActive)
+		while (!bv)  lpDD->GetVerticalBlankStatus(&bv);
 }
 
 
 
 void Wait(int time)
 {
-  unsigned int t = timeGetTime() + time;
-  while (t>timeGetTime()) ;
+	unsigned int t = timeGetTime() + time;
+	while (t > timeGetTime());
 }
 
 
@@ -110,33 +110,33 @@ TPicture LoadWall;
 void UpdateLoadingWindow()
 {
 
-    HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcCMain, hbmpVideoBuf);
-    HFONT   hfntOld = (HFONT)SelectObject(hdcCMain, fnt_Small);
+	HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcCMain, hbmpVideoBuf);
+	HFONT   hfntOld = (HFONT)SelectObject(hdcCMain, fnt_Small);
 
 
-	for (int y=0; y<LoadWall.H/2; y++) 
-		memcpy( (WORD*)lpVideoBuf + y*1024,
-		        LoadWall.lpImage  + y*LoadWall.W,
-				LoadWall.W*2);
+	for (int y = 0; y < LoadWall.H / 2; y++)
+		memcpy((WORD*)lpVideoBuf + y * 1024,
+			LoadWall.lpImage + y * LoadWall.W,
+			LoadWall.W * 2);
 
 	if (LoadCount)
-	for (int y=0; y<LoadWall.H/2; y++) 
-		memcpy( (WORD*)lpVideoBuf + y*1024,
-		        LoadWall.lpImage  + (y+LoadWall.H/2)*LoadWall.W,
-				(LoadWall.W*LoadCount/8)*2);
+		for (int y = 0; y < LoadWall.H / 2; y++)
+			memcpy((WORD*)lpVideoBuf + y * 1024,
+				LoadWall.lpImage + (y + LoadWall.H / 2) * LoadWall.W,
+				(LoadWall.W * LoadCount / 8) * 2);
 
-    //FillMemory(lpVideoBuf, 1024*loadwh*2, 1);
+	//FillMemory(lpVideoBuf, 1024*loadwh*2, 1);
 /*
-    SetBkMode(hdcCMain, TRANSPARENT);     
+	SetBkMode(hdcCMain, TRANSPARENT);
 	SetTextColor(hdcCMain, 0x000000);
-    TextOut(hdcCMain, 19, LoadWall.H/2-22, loadtxt, strlen(loadtxt) );
+	TextOut(hdcCMain, 19, LoadWall.H/2-22, loadtxt, strlen(loadtxt) );
 	SetTextColor(hdcCMain, 0xB0B070);
-    TextOut(hdcCMain, 18, LoadWall.H/2-23, loadtxt, strlen(loadtxt) );
+	TextOut(hdcCMain, 18, LoadWall.H/2-23, loadtxt, strlen(loadtxt) );
 */
-    BitBlt(hdcMain,0,0,LoadWall.W,LoadWall.H/2, hdcCMain,0,0, SRCCOPY);
-    
-    SelectObject(hdcCMain,hfntOld);
-    SelectObject(hdcCMain,hbmpOld);    
+	BitBlt(hdcMain, 0, 0, LoadWall.W, LoadWall.H / 2, hdcCMain, 0, 0, SRCCOPY);
+
+	SelectObject(hdcCMain, hfntOld);
+	SelectObject(hdcCMain, hbmpOld);
 }
 
 
@@ -145,20 +145,20 @@ void UpdateLoadingWindow()
 
 void StartLoading()
 {
-  LoadPictureTGA(LoadWall,   "HUNTDAT\\MENU\\loading.tga");
-  SetWindowPos(hwndMain, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - LoadWall.W)/2, 
-	                               (GetSystemMetrics(SM_CYSCREEN) - LoadWall.H/2)/2, LoadWall.W, LoadWall.H/2,
-								   SWP_SHOWWINDOW);
+	LoadPictureTGA(LoadWall, "HUNTDAT\\MENU\\loading.tga");
+	SetWindowPos(hwndMain, HWND_TOP, (GetSystemMetrics(SM_CXSCREEN) - LoadWall.W) / 2,
+		(GetSystemMetrics(SM_CYSCREEN) - LoadWall.H / 2) / 2, LoadWall.W, LoadWall.H / 2,
+		SWP_SHOWWINDOW);
 }
 
 void EndLoading()
-{	  
-    FillMemory(lpVideoBuf, 1024*768*2, 0);	
+{
+	FillMemory(lpVideoBuf, 1024 * 768 * 2, 0);
 	_HeapFree(Heap, 0, (void*)LoadWall.lpImage);
 }
 
 
-void PrintLoad(char *t)
+void PrintLoad(char* t)
 {
 	strcpy(loadtxt, t);
 	LoadCount++;
@@ -169,23 +169,23 @@ void PrintLoad(char *t)
 
 void SetVideoMode(int W, int H)
 {
-   WinW = W; 
-   WinH = H;
+	WinW = W;
+	WinH = H;
 
-   WinEX = WinW - 1;
-   WinEY = WinH - 1;
-   VideoCX = WinW / 2;
-   VideoCY = WinH / 2;
-    
-   CameraW = (float)VideoCX*1.25f;
-   CameraH = CameraW * (WinH * 1.3333f / WinW);
-   
-   SetWindowPos(hwndMain, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_SHOWWINDOW);
-   SetCursorPos(VideoCX, VideoCY);
-   
-   LoDetailSky =(W>400);
-   SetCursor(hcArrow);
-   while (ShowCursor(FALSE)>=0) ;   
+	WinEX = WinW - 1;
+	WinEY = WinH - 1;
+	VideoCX = WinW / 2;
+	VideoCY = WinH / 2;
+
+	CameraW = (float)VideoCX * 1.25f;
+	CameraH = CameraW * (WinH * 1.3333f / WinW);
+
+	SetWindowPos(hwndMain, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_SHOWWINDOW);
+	SetCursorPos(VideoCX, VideoCY);
+
+	LoDetailSky = (W > 400);
+	SetCursor(hcArrow);
+	while (ShowCursor(FALSE) >= 0);
 }
 
 

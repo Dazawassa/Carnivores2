@@ -127,17 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Characters.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Hunt2.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="mathematics.cpp" />
+    <ClCompile Include="renderd3d.cpp" />
     <ClCompile Include="Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
+    <ClInclude Include="eax.h" />
     <ClInclude Include="Hunt.h" />
     <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
