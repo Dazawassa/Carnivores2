@@ -551,10 +551,23 @@ void Audio_MixAmbient3d()
 
 
 
-
+// This function handles the audio mixing for the game. Beyond me how this is the only ASM here.
 void Audio_MixSound(int DestAddr, int SrcAddr, int MixLen, int LVolume, int RVolume)
 {
+	int src;
+	for (int i =0; i < MixLen; i++) {
+		// We shouldn't be leaving the compiler to decide how big these values can be. But that's a future me issue.
+		
+		// Handle left channel.
+		int leftSample = static_cast<int>(LVolume);
+
+
+
+		// Handle Right Channel.
+
+	}
 	// TODO: Come back to this, it needs to be rewritten in C++... Somehow
+	// On it :3
 	//_asm {
 	//       mov      edi, DestAddr                    
 	//       mov      ecx, MixLen         
